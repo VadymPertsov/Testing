@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 
 describe('Testing react app', () => {
@@ -14,9 +14,19 @@ describe('Testing react app', () => {
     expect(btn).toBeInTheDocument(); 
   });
 
-  test('First Test', async () => {
+  test('Async', async () => {
     render(<App />);
     const titleHelloWorld = await screen.findByText(/John/i);
     expect(titleHelloWorld).toBeInTheDocument();
+  });
+
+  test('Click Event', async () => {
+    render(<App />);
+    const btn = screen.getByRole('button');
+    expect(screen.queryByTestId('toggle')).toBeNull()
+    fireEvent.click(btn)
+    expect(screen.getByTestId('toggle')).toBeInTheDocument()
+    fireEvent.click(btn)
+    expect(screen.queryByTestId('toggle')).toBeNull()
   });
 })
